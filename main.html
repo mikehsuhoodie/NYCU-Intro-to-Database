@@ -16,6 +16,43 @@
             border-radius: 8px;
         }
 
+
+        .search_bar {
+            display: inline-flex;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .search_bar input[type="text"] {
+            width: 450px;
+            padding: 10px;
+            border: 2px solid #ccc;
+            border-radius: 20px 0 0 20px;
+            outline: none;
+            font-size: 16px;
+            transition: border-color 0.3s ease-in-out;
+        }
+
+        .search_bar input[type="text"]:focus {
+            border-color: #4CAF50;
+        }
+
+        .search_bar button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 0 20px 20px 0;
+            background-color: #4CAF50;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .search_bar button:hover {
+            background-color: #45a049;
+        }
+
+
         footer {
             margin-top: 20px;
             text-align: center;
@@ -32,8 +69,6 @@
             <a href="./aboutus.html">About Us</a>
         </div>
         <div class="search-bar">
-            <input type="text" placeholder="Search...">
-            <button>Search</button>
             <div class="nav-buttons">
                 <a href="./login.html">Log in</a>
             </div>
@@ -42,9 +77,14 @@
     </header>
 
     <div class="container">
-        <h1>Welcome to the Main Dashboard</h1>
-        <p>This is where your content will be displayed.</p>
+        <h1>Welcome to the Inventory search System</h1>
+        <div class="search_bar">
+            <input type="text" placeholder="Enter the name of the alcohol to start searching...">
+            <button>Search</button>
+        </div>
+        <p style="padding-top: 2vh;">We are pleased to provide you with immediate and accurate information about our products.</p>
     </div>
+    
 
     <footer>
         &copy; 2024 NYCU DB Project. All rights reserved.
