@@ -1,4 +1,10 @@
-drop table 2017PurchasePricesDec;
+SET GLOBAL local_infile = 1;
+DROP DATABASE IF EXISTS FinalProject;
+CREATE DATABASE FinalProject;
+USE FinalProject;
+
+
+DROP TABLE IF EXISTS 2017PurchasePricesDec;
 CREATE TABLE 2017PurchasePricesDec(
     Brand INT NOT NULL,
     `Description` VARCHAR(100),
@@ -12,14 +18,14 @@ CREATE TABLE 2017PurchasePricesDec(
     PRIMARY KEY (Brand)
 );
 
-load data local infile './2017PurchasePricesDec.csv'
+load data local infile './Data/2017PurchasePricesDec.csv'
 into table 2017PurchasePricesDec
 fields terminated by ','
 enclosed by '"'
 lines terminated by '\n'
 ignore 1 lines;
 
-drop table BegInvFINAL12312016;
+DROP TABLE IF EXISTS  BegInvFINAL12312016;
 CREATE TABLE BegInvFINAL12312016(
     InventoryId VARCHAR(50) NOT NULL,
     Store INT DEFAULT 0,
@@ -33,14 +39,14 @@ CREATE TABLE BegInvFINAL12312016(
     PRIMARY KEY (`InventoryId`)
 );
 
-load data local infile './BegInvFINAL12312016.csv'
+load data local infile './Data/BegInvFINAL12312016.csv'
 into table BegInvFINAL12312016
 fields terminated by ','
 enclosed by '"'
 lines terminated by '\n'
 ignore 1 lines;
 
-drop table EndInvFINAL12312016;
+DROP TABLE IF EXISTS  EndInvFINAL12312016;
 CREATE TABLE EndInvFINAL12312016(
     InventoryId VARCHAR(50) NOT NULL,
     Store INT DEFAULT 0,
@@ -54,14 +60,14 @@ CREATE TABLE EndInvFINAL12312016(
     PRIMARY KEY (`InventoryId`)
 );
 
-load data local infile './EndInvFINAL12312016.csv'
+load data local infile './Data/EndInvFINAL12312016.csv'
 into table EndInvFINAL12312016
 fields terminated by ','
 enclosed by '"'
 lines terminated by '\n'
 ignore 1 lines;
 
-drop table InvoicePurchases12312016;
+DROP TABLE IF EXISTS  InvoicePurchases12312016;
 CREATE TABLE InvoicePurchases12312016(
     VendorNumber INT NOT NULL,
     VendorName VARCHAR(150),
@@ -76,14 +82,14 @@ CREATE TABLE InvoicePurchases12312016(
     PRIMARY KEY (`VendorNumber`, `PONumber`)
 );
 
-load data local infile './InvoicePurchases12312016.csv'
+load data local infile './Data/InvoicePurchases12312016.csv'
 into table InvoicePurchases12312016
 fields terminated by ','
 enclosed by '"'
 lines terminated by '\n'
 ignore 1 lines;
 
-drop table PurchasesFINAL12312016;
+DROP TABLE IF EXISTS  PurchasesFINAL12312016;
 CREATE TABLE PurchasesFINAL12312016(
     InventoryId VARCHAR(50) NOT NULL,
     Store INT DEFAULT 0,
@@ -104,14 +110,14 @@ CREATE TABLE PurchasesFINAL12312016(
     PRIMARY KEY (`InventoryId`)
 );
 
-load data local infile './PurchasesFINAL12312016.csv'
+load data local infile './Data/PurchasesFINAL12312016.csv'
 into table PurchasesFINAL12312016
 fields terminated by ','
 enclosed by '"'
 lines terminated by '\n'
 ignore 1 lines;
 
-drop table SalesFINAL12312016;
+DROP TABLE IF EXISTS SalesFINAL12312016;
 CREATE TABLE SalesFINAL12312016(
     InventoryId VARCHAR(50) NOT NULL,
     Store INT DEFAULT 0,
@@ -130,7 +136,7 @@ CREATE TABLE SalesFINAL12312016(
     PRIMARY KEY (`InventoryId`)
 );
 
-load data local infile './SalesFINAL12312016.csv'
+load data local infile './Data/SalesFINAL12312016.csv'
 into table SalesFINAL12312016
 fields terminated by ','
 enclosed by '"'

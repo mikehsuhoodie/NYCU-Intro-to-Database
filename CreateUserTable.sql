@@ -1,3 +1,7 @@
+DROP DATABASE IF EXISTS FinalProject;
+CREATE DATABASE FinalProject;
+USE FinalProject;
+
 CREATE TABLE users(
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(255) NOT NULL UNIQUE,
@@ -5,4 +9,4 @@ CREATE TABLE users(
 );
 
 INSERT INTO users (username,password)
-VALUES('admin','1234');
+VALUES('admin','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4');

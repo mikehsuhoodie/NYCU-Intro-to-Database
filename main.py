@@ -11,8 +11,18 @@ db_config = {
     'host': 'localhost',  # Change this to your MySQL host
     'user': 'root',  # Change this to your MySQL username
     'password': '1234',  # Change this to your MySQL password
-    'database': 'final_project'  # Change this to your MySQL database name
+    'database': 'FinalProject'  # Change this to your MySQL database name
 }
+
+# Database Configuration on MikeHsu's PC 
+# db_config = {
+#     'host': 'localhost',  # Change this to your MySQL host
+#     'user': 'root',  # Change this to your MySQL username
+#     'password': '153648mike',  # Change this to your MySQL password
+#     'database': 'FinalProject'  # Change this to your MySQL database name
+# }
+
+
 
 # Database Connection
 def get_db_connection():
