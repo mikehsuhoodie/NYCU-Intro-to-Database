@@ -18,8 +18,18 @@ db_config = {
 def get_db_connection():
     return mysql.connector.connect(**db_config)
 
+# main Page
+@app.route("/")
+def main():
+    return render_template("main.html")
+
+# homepage Page
+@app.route("/main")
+def homepage():
+    return render_template("main.html")
+
 # Login Page
-@app.route("/", methods=["GET", "POST"])
+@app.route("/login", methods=["GET", "POST"])
 def login():
     # Connect to the database
     conn = get_db_connection()
@@ -55,12 +65,18 @@ def login():
 
     return render_template("login.html")
 
-# Welcome Page
-@app.route("/welcome")
-def welcome():
+# discussion Page
+@app.route("/discussion")
+def discussion():
     if 'username' not in session:
-        return redirect("/")
-    return render_template("welcome.html")
+        return redirect("/login")
+    return render_template("discussion.html")
+
+# about us Page
+@app.route("/aboutus")
+def aboutus():
+    return render_template("aboutus.html")
+
 
 # Logout
 @app.route("/logout")
@@ -92,7 +108,7 @@ def signup():
             cursor.execute('INSERT INTO users (username,password) VALUES (%s,%s)',(username,hash_password,))
             conn.commit()
             flash("Account created successfully! Please log in.", "success")
-            return redirect("/")
+            return redirect("/login")
         except mysql.connector.Error as err:
             flash(f"Error: {err}", "danger")
         finally:
