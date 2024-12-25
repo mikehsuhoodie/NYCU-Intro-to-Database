@@ -45,7 +45,7 @@ def login():
         
         # TODO # 2. Check if the user exists in the database and whether the password is correct
         # Query to check the user
-        cursor.execute("SELECT * FROM users WHERE username = %s",(username))
+        cursor.execute("SELECT * FROM users WHERE username = %s AND password= %s",(username,hash_password))
         result = cursor.fetchone() # fetchone() returns None if no record is found
 
         if result:
@@ -54,7 +54,7 @@ def login():
             session['username']=result[1]
             cursor.close()
             conn.close()
-            return redirect("/welcome")
+            return redirect("/")
         else:
             # failed match
             flash("Invalid username or password", "danger")
