@@ -96,11 +96,82 @@ def login():
     return render_template("login.html")
 
 # discussion Page
-@app.route("/discussion")
+@app.route('/discussion')
 def discussion():
     if 'username' not in session:
         return redirect("/login")
-    return render_template("discussion.html")
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM posts ORDER BY created_at DESC")
+    posts = cur.fetchall()
+    cur.close()
+    conn.close()
+    return render_template('discussion.html', posts=posts)
+
+#discussion page - add post
+@app.route('/discussion/add', methods=['POST'])
+def add_post():
+    if 'username' not in session:
+        return redirect("/login")
+    title = request.form['title']
+    content = request.form['content']
+    conn = get_db_connection()
+    cur = conn.cursor()
+    try:
+        cur.execute("INSERT INTO posts (title, content) VALUES (%s, %s)", (title, content))
+        conn.commit()
+        flash('Post added successfully!', 'success')
+    except Exception as e:
+        flash(f'Error: {str(e)}', 'danger')
+    finally:
+        cur.close()
+        conn.close()
+    return redirect("/discussion")
+
+#discussion page - edit post
+@app.route('/discussion/edit/<int:id>', methods=['GET', 'POST'])
+def edit_post(id):
+    if 'username' not in session:
+        return redirect("/login")
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    if request.method == 'POST':
+        title = request.form['title']
+        content = request.form['content']
+        cur.execute("UPDATE posts SET title = %s, content = %s WHERE id = %s", (title, content, id))
+        conn.commit()
+        cur.close()
+        conn.close()
+        flash('Post updated successfully!')
+        return redirect("/discussion")
+    else:
+        cur.execute("SELECT * FROM posts WHERE id = %s", (id,))
+        post = cur.fetchone()
+        cur.close()
+        conn.close()
+        return render_template('edit_post.html', post=post)
+
+#discussion page - delete post
+@app.route('/discussion/delete/<int:id>', methods=['POST'])
+def delete_post(id):
+    if 'username' not in session:
+        return redirect("/login")
+    conn = get_db_connection()
+    cur = conn.cursor()
+    try:
+        cur.execute("DELETE FROM posts WHERE id = %s", (id,))
+        conn.commit()
+        flash('Post deleted successfully!', 'success')
+    except Exception as e:
+        flash(f'Error: {str(e)}', 'danger')
+    finally:
+        cur.close()
+        conn.close()
+    return redirect("/discussion")
+
+
+
 
 # about us Page
 @app.route("/aboutus")
