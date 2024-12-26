@@ -7,20 +7,20 @@ app = Flask(__name__)
 app.secret_key = "your_secret_key"
 
 # Database Configuration
-db_config = {
-    'host': 'localhost',  # Change this to your MySQL host
-    'user': 'root',  # Change this to your MySQL username
-    'password': '1234',  # Change this to your MySQL password
-    'database': 'FinalProject'  # Change this to your MySQL database name
-}
-
-# Database Configuration on MikeHsu's PC 
 # db_config = {
 #     'host': 'localhost',  # Change this to your MySQL host
 #     'user': 'root',  # Change this to your MySQL username
-#     'password': '153648mike',  # Change this to your MySQL password
+#     'password': '1234',  # Change this to your MySQL password
 #     'database': 'FinalProject'  # Change this to your MySQL database name
 # }
+
+# Database Configuration on MikeHsu's PC 
+db_config = {
+    'host': 'localhost',  # Change this to your MySQL host
+    'user': 'root',  # Change this to your MySQL username
+    'password': '153648mike',  # Change this to your MySQL password
+    'database': 'FinalProject'  # Change this to your MySQL database name
+}
 
 
 
@@ -28,15 +28,35 @@ db_config = {
 def get_db_connection():
     return mysql.connector.connect(**db_config)
 
-# main Page
-@app.route("/")
+# Main page
+@app.route("/", methods=["GET"])
 def main():
+    # Render the homepage with the search bar
     return render_template("main.html")
 
-# homepage Page
-@app.route("/main")
-def homepage():
-    return render_template("main.html")
+@app.route("/search_results", methods=["GET"])
+def search_results():
+    # Connect to the database
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)  # Use dictionary=True for easier result handling
+
+    # Get the search term from the query parameters
+    search_term = request.args.get("search", "")
+
+    search_results = []  # Initialize an empty list for results
+
+    # if search_term:
+    #     # Query the database for the search term
+    #     query = "SELECT * FROM inventory WHERE name LIKE %s"
+    #     cursor.execute(query, (f"%{search_term}%",))
+    #     search_results = cursor.fetchall()  # Fetch all matching records
+
+    # Close the connection
+    cursor.close()
+    conn.close()
+
+    # Render the search results page with results
+    return render_template("search_results.html", search_results=search_results, search_term=search_term)
 
 # Login Page
 @app.route("/login", methods=["GET", "POST"])

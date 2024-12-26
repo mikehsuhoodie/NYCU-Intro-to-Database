@@ -33,15 +33,30 @@
         </div>
         <div class="search-bar">
             <div class="nav-buttons">
-                <a href="./login">Log in</a>
+                {% if session.get('username') %}
+                    <a href="/logout">Log out</a>
+                {% else %}
+                    <a href="/login">Log in</a>
+                {% endif %}
             </div>
-        </div>
+        </div> 
         
     </header>
 
     <div class="container">
-        <h1 style="font-size: 36px; text-align: left;margin-left: 2vw;">We are the Team 06</h1>
-        <p style="text-align: left;margin-left: 2vw;">We really need credits of this course...(ノДＴ)</p>
+        <h1>Search Results</h1>
+        <p>Results for "{{ search_term }}":</p>
+        <h2>hehehehehe</h2>
+<!-- 
+        {% if search_results %}
+            <ul>
+                {% for result in search_results %}
+                    <li>{{ result['name'] }} - {{ result['details'] }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No results found for your search.</p>
+        {% endif %} -->
     </div>
 
     <footer>
@@ -49,5 +64,3 @@
     </footer>
 </body>
 </html>
-
-

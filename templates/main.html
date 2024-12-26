@@ -64,26 +64,33 @@
 <body>
     <header>
         <div class="nav-buttons">
-            <a href="./main">Home</a>
+            <a href="/">Home</a>
             <a href="./discussion">Discussion Board</a>
             <a href="./aboutus">About Us</a>
         </div>
         <div class="search-bar">
             <div class="nav-buttons">
-                <a href="./login">Log in</a>
+                {% if session.get('username') %}
+                    <a href="/logout">Log out</a>
+                {% else %}
+                    <a href="/login">Log in</a>
+                {% endif %}
             </div>
-        </div>
+        </div>        
         
     </header>
 
     <div class="container">
-        <h1>Welcome to the Inventory search System</h1>
-        <div class="search_bar">
-            <input type="text" placeholder="Enter the name of the alcohol to start searching...">
-            <button>Search</button>
-        </div>
+        <h1>Welcome to the Inventory Search System</h1>
+        <form method="GET" action="/search_results">
+            <div class="search_bar">
+                <input type="text" name="search" placeholder="Enter the name of the alcohol to start searching...">
+                <button type="submit">Search</button>
+            </div>
+        </form>
         <p style="padding-top: 2vh;">We are pleased to provide you with immediate and accurate information about our products.</p>
     </div>
+    
     
 
     <footer>

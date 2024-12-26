@@ -27,15 +27,19 @@
 <body>
     <header>
         <div class="nav-buttons">
-            <a href="./main">Home</a>
+            <a href="/">Home</a>
             <a href="./discussion">Discussion Board</a>
             <a href="./aboutus">About Us</a>
         </div>
         <div class="search-bar">
             <div class="nav-buttons">
-                <a href="./login">Log in</a>
+                {% if session.get('username') %}
+                    <a href="/logout">Log out</a>
+                {% else %}
+                    <a href="/login">Log in</a>
+                {% endif %}
             </div>
-        </div>
+        </div> 
         
     </header>
 
