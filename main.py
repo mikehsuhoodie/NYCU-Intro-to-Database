@@ -82,9 +82,10 @@ def login():
             # password matches
             session['loggedin']=True
             session['username']=result[1]
+            next_url = session.pop('next', '/')
             cursor.close()
             conn.close()
-            return redirect("/")
+            return redirect(next_url)
         else:
             # failed match
             flash("Invalid username or password", "danger")
@@ -92,14 +93,14 @@ def login():
         # Close the connection
         cursor.close()
         conn.close()
-
+    if 'next' not in session and request.referrer:
+        session['next'] = request.referrer
     return render_template("login.html")
 
 # discussion Page
 @app.route('/discussion')
 def discussion():
-    if 'username' not in session:
-        return redirect("/login")
+
     conn = get_db_connection()
     cur = conn.cursor()
     cur.execute("SELECT * FROM posts ORDER BY created_at DESC")
