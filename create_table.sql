@@ -108,7 +108,7 @@ CREATE TABLE PurchasesFINAL12312016(
     Quantity INT DEFAULT 0,
     Dollars DECIMAL(10, 2),
     Classification INT DEFAULT 0,
-    PRIMARY KEY (`InventoryId`)
+    PRIMARY KEY (InventoryId, VendorNumber, InvoiceDate, PayDate)
 );
 
 load data local infile './Data/PurchasesFINAL12312016.csv'
@@ -134,7 +134,7 @@ CREATE TABLE SalesFINAL12312016(
     ExciseTax DECIMAL(10, 2) DEFAULT 0.00,
     VendorNo INT DEFAULT 0,
     VendorName VARCHAR(150),
-    PRIMARY KEY (`InventoryId`)
+    PRIMARY KEY (`InventoryId`, SalesDate, VendorNo)
 );
 
 load data local infile './Data/SalesFINAL12312016.csv'
