@@ -115,10 +115,11 @@ def add_post():
         return redirect("/login")
     title = request.form['title']
     content = request.form['content']
+    usname = session['username']
     conn = get_db_connection()
     cur = conn.cursor()
     try:
-        cur.execute("INSERT INTO posts (title, content) VALUES (%s, %s)", (title, content))
+        cur.execute("INSERT INTO posts (title, content,username) VALUES (%s, %s, %s)", (title, content,usname))
         conn.commit()
         flash('Post added successfully!', 'success')
     except Exception as e:
