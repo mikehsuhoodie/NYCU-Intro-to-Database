@@ -54,10 +54,10 @@
     </header>
 
     <div class="container">
-        <h1>Search Results</h1>
+        <!-- <h1>Search Results</h1>
         <p>Results for "{{ search_term }}":</p>
         <h2>hehehehehe</h2>
-<!-- 
+
         {% if search_results %}
             <ul>
                 {% for result in search_results %}
@@ -67,6 +67,41 @@
         {% else %}
             <p>No results found for your search.</p>
         {% endif %} -->
+
+        <h1>Search Results</h1>
+        <p>Results for "{{ search_term }}":</p>
+        {% if results %}
+        <table style="border: 1px solid;">
+            <thead>
+                <tr>
+                    <th>Brand</th>
+                    <th>On Hand</th>
+                    <th>City</th>
+                    <th>Sell Price</th>
+                    <th>Vendor Name</th>
+                    <th>Purchase Quantity</th>
+                    <th>Purchase Dollars</th>
+                    <th>Invoice Pay Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in results %}
+                    <tr>
+                        <td>{{ row.Brand }}</td>
+                        <td>{{ row.onHand }}</td>
+                        <td>{{ row.City }}</td>
+                        <td>{{ row.SellPrice }}</td>
+                        <td>{{ row.DecVendorName }}</td>
+                        <td>{{ row.PurchaseQuantity }}</td>
+                        <td>{{ row.PurchaseDollars }}</td>
+                        <td>{{ row.InvoicePayDate }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>No results found for your search.</p>
+        {% endif %}
 
 
         <div class="BackToSearch">
