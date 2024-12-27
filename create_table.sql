@@ -3,6 +3,7 @@ DROP DATABASE IF EXISTS FinalProject;
 CREATE DATABASE FinalProject;
 USE FinalProject;
 
+-- dataset
 
 DROP TABLE IF EXISTS 2017PurchasePricesDec;
 CREATE TABLE 2017PurchasePricesDec(
@@ -142,3 +143,25 @@ fields terminated by ','
 enclosed by '"'
 lines terminated by '\n'
 ignore 1 lines;
+
+-- user
+
+CREATE TABLE users(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(64) NOT NULL
+);
+
+INSERT INTO users (username,password)
+VALUES('admin','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4');
+
+-- discussion board
+
+CREATE TABLE posts (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    content TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
