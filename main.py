@@ -2,6 +2,12 @@ from flask import Flask, render_template, request, redirect, flash, session
 import mysql.connector
 import hashlib #hashing password
 
+import os
+
+print("Current working directory:", os.getcwd())
+os.chdir(os.path.dirname(__file__))
+print("Current working directory:", os.getcwd())
+
 # Flask App Initialization
 app = Flask(__name__)
 app.secret_key = "your_secret_key"
@@ -34,29 +40,61 @@ def main():
     # Render the homepage with the search bar
     return render_template("main.html")
 
-@app.route("/search_results", methods=["GET"])
-def search_results():
-    # Connect to the database
+
+# @app.route("/search_results", methods=["GET"])
+# def search_results():
+#     # Connect to the database
+#     conn = get_db_connection()
+#     cursor = conn.cursor(dictionary=True)  # Use dictionary=True for easier result handling
+
+#     # Get the search term from the query parameters
+#     search_term = request.args.get("search", "")
+
+#     search_results = []  # Initialize an empty list for results
+
+#     # if search_term:
+#     #     # Query the database for the search term
+#     #     query = "SELECT * FROM inventory WHERE name LIKE %s"
+#     #     cursor.execute(query, (f"%{search_term}%",))
+#     #     search_results = cursor.fetchall()  # Fetch all matching records
+
+#     # Close the connection
+#     cursor.close()
+#     conn.close()
+
+#     # Render the search results page with results
+#     return render_template("search_results.html", search_results=search_results, search_term=search_term)
+
+# Search Page
+@app.route('/search_results', methods=['POST'])
+def search():
+    description = request.form.get('search')
+
+    with open('page_2.sql','r',encoding='utf8') as searchfile:
+        sql_script=searchfile.read()
+
+    sql_script=sql_script.replace("SET @inputDescription = 'Belvedere Vodka';", f"SET @inputDescription ='{description}'")
+
+
     conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)  # Use dictionary=True for easier result handling
+    cursor = conn.cursor(dictionary=True)
+    results = []
 
-    # Get the search term from the query parameters
-    search_term = request.args.get("search", "")
+    
 
-    search_results = []  # Initialize an empty list for results
+    try:
+        for statement in sql_script.split(';') :
+            if statement.strip():
+                cursor.execute(statement)
+        results =cursor.fetchall()
+    except Exception as e:
+        flash(f'Error: {str(e)}', 'danger')
+    finally:
+        cursor.close()
+        conn.close()
 
-    # if search_term:
-    #     # Query the database for the search term
-    #     query = "SELECT * FROM inventory WHERE name LIKE %s"
-    #     cursor.execute(query, (f"%{search_term}%",))
-    #     search_results = cursor.fetchall()  # Fetch all matching records
+    return render_template('search_results.html', search_term=description,results=results)
 
-    # Close the connection
-    cursor.close()
-    conn.close()
-
-    # Render the search results page with results
-    return render_template("search_results.html", search_results=search_results, search_term=search_term)
 
 # Login Page
 @app.route("/login", methods=["GET", "POST"])
