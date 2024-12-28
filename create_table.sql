@@ -94,54 +94,33 @@ DROP TABLE IF EXISTS PurchasesFINAL12312016;
 CREATE TABLE PurchasesFINAL12312016(
     ID INT AUTO_INCREMENT,
     InventoryId VARCHAR(50) NOT NULL,
-    Store INT DEFAULT 0,
     Brand INT DEFAULT 0,
-    `Description` VARCHAR(255),
-    `Size` VARCHAR(20),
     VendorNumber INT DEFAULT 0,
-    VendorName VARCHAR(150),
     PONumber INT NOT NULL,
-    PODate DATE,
-    ReceivingDate DATE,
     InvoiceDate DATE,
     PayDate DATE,
-    PurchasePrice DECIMAL(10, 2),
     Quantity INT DEFAULT 0,
     Dollars DECIMAL(10, 2),
-    Classification INT DEFAULT 0,
-    
-    -- 1) 以 ID 作為 Primary Key
-    PRIMARY KEY (ID),
-    
-    -- 2) 仍保留原本的複合鍵 (至少設成 UNIQUE KEY)
-    UNIQUE KEY (InventoryId, VendorNumber, InvoiceDate, PayDate)
+    PRIMARY KEY (ID)  -- 以 ID 作為 Primary Key
 );
 
-load data local infile './Data/PurchasesFINAL12312016.csv'
-into table PurchasesFINAL12312016
-fields terminated by ','
-enclosed by '"'
-lines terminated by '\n'
-ignore 1 lines
+LOAD DATA LOCAL INFILE './Data/PurchasesFINAL12312016.csv'
+INTO TABLE PurchasesFINAL12312016
+FIELDS TERMINATED BY ',' 
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES
 (
-  -- ★ 不要放 ID，因為它是 auto_increment
   InventoryId,
-  Store,
   Brand,
-  `Description`,
-  `Size`,
   VendorNumber,
-  VendorName,
   PONumber,
-  PODate,
-  ReceivingDate,
   InvoiceDate,
   PayDate,
-  PurchasePrice,
   Quantity,
-  Dollars,
-  Classification
+  Dollars
 );
+
 
 DROP TABLE IF EXISTS SalesFINAL12312016;
 CREATE TABLE SalesFINAL12312016(
