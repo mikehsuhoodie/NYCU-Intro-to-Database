@@ -21,7 +21,7 @@ SELECT DISTINCT
     REPLACE(REPLACE(decTable.VendorName, '\r', ''), '\n', '') AS DecVendorName,
 
     -- 來自 PurchasesFINAL12312016 的欄位
-    pur.Quantity AS PurchaseQuantity,
+    REPLACE(REPLACE(pur.Quantity, '\r', ''), '\n', '') AS PurchaseQuantity,
     pur.Dollars  AS PurchaseDollars,
 
     -- 來自 InvoicePurchases12312016 的欄位
