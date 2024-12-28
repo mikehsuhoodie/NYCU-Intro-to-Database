@@ -40,62 +40,42 @@ def main():
     is_logged_in = 'username' in session 
     username = session.get('username') 
     return render_template('main.html', is_logged_in=is_logged_in,username=username)
-
-
-# @app.route("/search_results", methods=["GET"])
-# def search_results():
-#     # Connect to the database
-#     conn = get_db_connection()
-#     cursor = conn.cursor(dictionary=True)  # Use dictionary=True for easier result handling
-
-#     # Get the search term from the query parameters
-#     search_term = request.args.get("search", "")
-
-#     search_results = []  # Initialize an empty list for results
-
-#     # if search_term:
-#     #     # Query the database for the search term
-#     #     query = "SELECT * FROM inventory WHERE name LIKE %s"
-#     #     cursor.execute(query, (f"%{search_term}%",))
-#     #     search_results = cursor.fetchall()  # Fetch all matching records
-
-#     # Close the connection
-#     cursor.close()
-#     conn.close()
-
-#     # Render the search results page with results
-#     return render_template("search_results.html", search_results=search_results, search_term=search_term)
-
 # Search Page
 @app.route('/search_results', methods=['POST'])
 def search():
     description = request.form.get('search')
 
-    with open('page_2.sql','r',encoding='utf8') as searchfile:
-        sql_script=searchfile.read()
+    # Read the SQL script
+    with open('search_script.sql', 'r', encoding='utf8') as searchfile:
+        sql_script = searchfile.read()
 
-    sql_script=sql_script.replace("SET @inputDescription = 'Belvedere Vodka';", f"SET @inputDescription ='{description}'")
-
+    sql_script = sql_script.replace(
+        "SET @inputDescription = 'Belvedere Vodka';",
+        "SET @inputDescription = %s;"
+    )
 
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
     results = []
 
-    
-
     try:
-        for statement in sql_script.split(';') :
-            if statement.strip():
-                cursor.execute(statement)
-        results =cursor.fetchall()
+        for statement in sql_script.split(';'):
+            if statement.strip(): # ensure statement is non-empty.
+                if "SET @inputDescription" in statement:
+                    # statement=> SET @inputDescription = %s;
+                    # description=> a search term from user
+                    cursor.execute(statement, (description,)) #  parameterized input
+                else:
+                    cursor.execute(statement)
+
+        results = cursor.fetchall()
     except Exception as e:
         flash(f'Error: {str(e)}', 'danger')
     finally:
         cursor.close()
         conn.close()
 
-    return render_template('search_results.html', search_term=description,results=results)
-
+    return render_template('search_results.html', search_term=description, results=results)
 
 # Login Page
 @app.route("/login", methods=["GET", "POST"])
@@ -174,24 +154,45 @@ def add_post():
 def edit_post(id):
     if 'username' not in session:
         return redirect("/login")
-    conn = get_db_connection()
-    cur = conn.cursor()
+    
+    conn = None
+    cur = None
 
-    if request.method == 'POST':
-        title = request.form['title']
-        content = request.form['content']
-        cur.execute("UPDATE posts SET title = %s, content = %s WHERE id = %s", (title, content, id))
-        conn.commit()
-        cur.close()
-        conn.close()
-        flash('Post updated successfully!','success')
-        return redirect("/discussion")
-    else:
-        cur.execute("SELECT * FROM posts WHERE id = %s", (id,))
-        post = cur.fetchone()
-        cur.close()
-        conn.close()
-        return render_template('edit_post.html', post=post)
+    try:
+        # Establish database connection
+        conn = get_db_connection()
+        cur = conn.cursor(dictionary=True)  # Use dictionary cursor for better readability
+        
+        if request.method == 'POST':
+            # Handle POST request (update post)
+            title = request.form['title']
+            content = request.form['content']
+            
+            cur.execute("UPDATE posts SET title = %s, content = %s WHERE id = %s", (title, content, id))
+            conn.commit()
+            
+            flash('Post updated successfully!', 'success')
+            return redirect("/discussion")
+        else:# Handle GET 
+            cur.execute("SELECT * FROM posts WHERE id = %s", (id,))
+            post = cur.fetchone()
+            
+            if not post:
+                flash("Post not found!", "danger")
+                return redirect("/discussion")
+            
+            return render_template('edit_post.html', post=post)
+    except mysql.connector.Error as db_error:
+        flash(f"Database error: {str(db_error)}", "danger")
+    except Exception as e:
+        flash(f"Unexpected error: {str(e)}", "danger")
+    finally:
+        if cur:
+            cur.close()
+        if conn:
+            conn.close()
+    return redirect("/discussion")
+
 
 #discussion page - delete post
 @app.route('/discussion/delete/<int:id>', methods=['POST'])
