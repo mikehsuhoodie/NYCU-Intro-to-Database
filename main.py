@@ -37,8 +37,9 @@ def get_db_connection():
 # Main page
 @app.route("/", methods=["GET"])
 def main():
-    # Render the homepage with the search bar
-    return render_template("main.html")
+    is_logged_in = 'username' in session 
+    username = session.get('username') 
+    return render_template('main.html', is_logged_in=is_logged_in,username=username)
 
 
 # @app.route("/search_results", methods=["GET"])
