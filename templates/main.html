@@ -84,8 +84,9 @@
         <h1>Welcome to the Inventory Search System</h1>
         <form method="post" action="/search_results">
             <div class="search_bar">
-                <input type="text" name="search" placeholder="Enter the name of the alcohol to start searching..." required value="">
-                <button type="submit">Search</button>
+                <input type="text" name="search" placeholder="Enter the name of the alcohol to start searching..." required value="Belvedere Vodka">
+                <button type="submit" id="login-status">Search</button>
+                
             </div>
         </form>
         <p style="padding-top: 2vh;">We are pleased to provide you with immediate and accurate information about our products.</p>
@@ -96,5 +97,38 @@
     <footer>
         &copy; 2024 NYCU DB Project. All rights reserved.
     </footer>
+
+    <script>
+        
+        var btn= document.getElementById("login-status");
+
+        btn.addEventListener("click",check);
+        
+        function check(event){
+
+            event.preventDefault();
+            var isLoggedIn = {{ is_logged_in | tojson | safe}};
+            
+            if(!isLoggedIn){
+                alert('Please log in to search');
+                window.location.href='/login';
+            }
+
+        };
+        
+    </script>
+    
+    
+
+    
 </body>
 </html>
+
+
+    
+
+
+
+
+
+
