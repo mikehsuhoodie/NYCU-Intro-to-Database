@@ -184,7 +184,7 @@ def edit_post(id):
         conn.commit()
         cur.close()
         conn.close()
-        flash('Post updated successfully!')
+        flash('Post updated successfully!','success')
         return redirect("/discussion")
     else:
         cur.execute("SELECT * FROM posts WHERE id = %s", (id,))
