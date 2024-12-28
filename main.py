@@ -252,7 +252,7 @@ def signup():
             flash("Account created successfully! Please log in.", "success")
             return redirect("/login")
         except mysql.connector.Error as err:
-            flash(f"Error: {err}", "danger")
+            flash(f"The account already exists.", "danger")
         finally:
             cursor.close()
             conn.close()
