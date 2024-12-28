@@ -25,7 +25,30 @@
             text-decoration: none;
             font-weight: bold;
         }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
 
+        table th, table td {
+            border: 1px solid #ddd;
+            text-align: left;
+            padding: 10px;
+        }
+
+        table th {
+            background-color: #f4f4f4;
+            font-weight: bold;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        table tr:hover {
+            background-color: #f1f1f1;
+        }
         footer {
             margin-top: 20px;
             text-align: center;
@@ -54,19 +77,6 @@
     </header>
 
     <div class="container">
-        <!-- <h1>Search Results</h1>
-        <p>Results for "{{ search_term }}":</p>
-        <h2>hehehehehe</h2>
-
-        {% if search_results %}
-            <ul>
-                {% for result in search_results %}
-                    <li>{{ result['name'] }} - {{ result['details'] }}</li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p>No results found for your search.</p>
-        {% endif %} -->
 
         <h1>Search Results</h1>
         <p>Results for "{{ search_term }}":</p>
