@@ -24,7 +24,7 @@ app.secret_key = "your_secret_key"
 db_config = {
     'host': 'localhost',  # Change this to your MySQL host
     'user': 'root',  # Change this to your MySQL username
-    'password': '1234',  # Change this to your MySQL password
+    'password': '153648mike',  # Change this to your MySQL password
     'database': 'FinalProject'  # Change this to your MySQL database name
 }
 
@@ -161,7 +161,7 @@ def edit_post(id):
     try:
         # Establish database connection
         conn = get_db_connection()
-        cur = conn.cursor(dictionary=True)  # Use dictionary cursor for better readability
+        cur = conn.cursor()
         
         if request.method == 'POST':
             # Handle POST request (update post)
@@ -176,12 +176,12 @@ def edit_post(id):
         else:# Handle GET 
             cur.execute("SELECT * FROM posts WHERE id = %s", (id,))
             post = cur.fetchone()
-            
+
             if not post:
                 flash("Post not found!", "danger")
                 return redirect("/discussion")
-            
             return render_template('edit_post.html', post=post)
+        
     except mysql.connector.Error as db_error:
         flash(f"Database error: {str(db_error)}", "danger")
     except Exception as e:
