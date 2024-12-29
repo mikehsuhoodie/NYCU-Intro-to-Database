@@ -4,9 +4,9 @@ import hashlib #hashing password
 
 import os
 
-print("Current working directory:", os.getcwd())
+
 os.chdir(os.path.dirname(__file__))
-print("Current working directory:", os.getcwd())
+
 
 # Flask App Initialization
 app = Flask(__name__)
@@ -24,7 +24,7 @@ app.secret_key = "your_secret_key"
 db_config = {
     'host': 'localhost',  # Change this to your MySQL host
     'user': 'root',  # Change this to your MySQL username
-    'password': '153648mike',  # Change this to your MySQL password
+    'password': '1234',  # Change this to your MySQL password
     'database': 'FinalProject'  # Change this to your MySQL database name
 }
 
